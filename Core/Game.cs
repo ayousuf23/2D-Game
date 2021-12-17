@@ -4,12 +4,16 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Core
 {
-    public class Game1 : Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        public Game1()
+        private Engine.Scene.ISceneManager _sceneManager;
+        private Engine.Graphics.IGraphicsManager _graphicsManager;
+        private Engine.Content.IContentManager _contentManager;
+
+        public Game()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -19,6 +23,9 @@ namespace Core
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _sceneManager = new Engine.Scene.SceneManager(Exit);
+            _contentManager = new Engine.Content.FileContentManager(GraphicsDevice);
+            Engine.GameServices.Initialize(_sceneManager, _contentManager, _graphicsManager);
 
             base.Initialize();
         }
