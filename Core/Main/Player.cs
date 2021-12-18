@@ -17,6 +17,8 @@ namespace Core.Main
 
         private Vector2 Velocity = new Vector2(300f, 300f);
 
+        private float Rotation = 0f;
+
         public Player()
         {
             Texture = Engine.GameServices.ContentManager.LoadTexture2D(@"resources\player.png");
@@ -24,7 +26,7 @@ namespace Core.Main
 
         public void Draw()
         {
-            Engine.GameServices.SpriteBatch.Draw(Texture, Position, Color.White);
+            Engine.GameServices.SpriteBatch.Draw(Texture, Position, null, Color.White, Rotation, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
         public void Update(GameTime gameTime)
@@ -42,6 +44,13 @@ namespace Core.Main
 
             Position += result;
             Position.Round();
+
+            //TO-DO: Need to convert mouse coordinates to map coordinates
+            MouseState mouse = Mouse.GetState();
+            Vector2 playerMouseDiff = new Vector2(mouse.X - Position.X, mouse.Y - Position.Y);
+            System.Diagnostics.Debug.WriteLine(mouse.Position);
+            float sin = playerMouseDiff.Y / playerMouseDiff.Length();
+            Rotation = (float)Math.Asin(sin);
         }
     }
 }

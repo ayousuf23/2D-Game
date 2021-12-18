@@ -16,8 +16,6 @@ namespace Core
 
         private Engine.Map.TiledMap _map;
 
-        private List<Engine.Map.Tile> tiles;
-
         private Main.Player _player;
 
         private Engine.Camera _camera;
@@ -44,11 +42,8 @@ namespace Core
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Engine.GameServices.Initialize(_sceneManager, _contentManager, _graphicsManager, _spriteBatch);
-            // TODO: use this.Content to load your game content here
-            //_map = new Engine.Map.TiledMap(@"resources\level1.tmx");
 
-            Engine.Map.TiledMapFactory factory = new Engine.Map.TiledMapFactory();
-            tiles = factory.CreateTiles(@"resources\level1.tmx");
+            _map = Engine.Map.TiledMapFactory.Create(@"resources\level1.tmx").Build();
 
             _player = new Main.Player();
             _camera = new Engine.Camera();
@@ -72,13 +67,9 @@ namespace Core
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin(blendState: BlendState.NonPremultiplied, transformMatrix: _camera.Transform, samplerState: SamplerState.PointClamp);
-            //_map.Draw();
-
-            foreach (var tile in tiles)
-            {
-                _spriteBatch.Draw(tile.Texture, tile.Destination, tile.Source, Color.White, tile.Rotation, new Vector2(32f, 32f), tile.Effect, 0f);
-            }
+            _spriteBatch.Begin(blendState: BlendState.NonPremultiplied, transformMatrix: _camera.Transform);
+            
+            _map.Draw();
 
             _player.Draw();
 

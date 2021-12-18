@@ -13,9 +13,14 @@ namespace Core.Engine.Map
 
         private TmxMap Map;
 
-        public TiledMapFactory()
+        public TiledMapFactory(TmxMap map)
         {
+            Map = map;
+        }
 
+        public static TiledMapFactory Create(string path)
+        {
+            return new TiledMapFactory(new TmxMap(path));
         }
 
         private void CreateTextureDictionary()
@@ -40,9 +45,8 @@ namespace Core.Engine.Map
             return null;
         }
 
-        public List<Tile> CreateTiles(string path)
+        public TiledMap Build()
         {
-            Map = new TmxMap(path);
             CreateTextureDictionary();
 
             List<Tile> tiles = new List<Tile>();
@@ -71,6 +75,7 @@ namespace Core.Engine.Map
                     //Get tileset texture
                     Texture2D texture = TextureDictionary[tileset.Name];
                     
+                    //Used for debugging
                     if (tile.Gid == 141)
                     {
                         Console.WriteLine("hi");
@@ -88,7 +93,7 @@ namespace Core.Engine.Map
                 }
             }
 
-            return tiles;
+            return new TiledMap(tiles, Map.TileWidth, Map.TileHeight);
         }
     }
 }

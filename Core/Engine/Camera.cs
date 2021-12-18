@@ -11,9 +11,15 @@ namespace Core.Engine
 
         public void Follow(ISprite target)
         {
+            var targetX = Math.Min(-target.Position.X, Engine.GameServices.GraphicsManager.ViewportWidth / -2f);
+            targetX = Math.Max(targetX, -3200 + Engine.GameServices.GraphicsManager.ViewportWidth / 2f);
+
+            var targetY = Math.Min(-target.Position.Y, Engine.GameServices.GraphicsManager.ViewportHeight / -2f);
+            targetY = Math.Max(targetY, -1920 + Engine.GameServices.GraphicsManager.ViewportHeight / 2f);
+
             var position = Matrix.CreateTranslation(
-                  Math.Min(-target.Position.X, Engine.GameServices.GraphicsManager.ViewportWidth / -2f) - (target.Rectangle.Width / 2),
-                  Math.Min(-target.Position.Y, Engine.GameServices.GraphicsManager.ViewportHeight / -2f) - (target.Rectangle.Height / 2),
+                  targetX,
+                  targetY,
                   0);
             
             var offset = Matrix.CreateTranslation(
